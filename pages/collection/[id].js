@@ -1,5 +1,6 @@
 import fetch from 'isomorphic-unfetch';
 import Menu from '../../components/Menu';
+import { Button, Card, FlexGrid } from 'owenmerry-designsystem';
 
 const CollectionLinks = props => {
 
@@ -7,11 +8,19 @@ return (
     <div>
     <Menu />
       <p>Show Links in Collection ({props.links.length})</p>
+      <FlexGrid>
       {props.links.map((link, index) => (
-        <div key={index}>
-            <a href={link.url} target='_blank'>{link.url}</a>
-        </div>
+        <Card 
+        key={index}
+        image={link.image}
+        title={link.title}
+        subtitle={link.description} 
+        link={link.url}
+        linkTarget={true}
+        padding
+        ></Card>
       ))}
+      </FlexGrid>
     </div>
   )
 };
