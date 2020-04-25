@@ -7,11 +7,13 @@ const Links = props => {
 return (
     <div>
     <Menu />
+    <div>Add Link <input type='text' /> <button>Add Link</button></div>
       <p>Show Links ({props.links.length})</p>
       <FlexGrid>
-        {props.links.slice(0,5).map((link, index) => (
+        {props.links.reverse().slice(0,100).map((link, index) => (
           <Card 
           key={index}
+          image={link.image}
           title={link.title}
           subtitle={link.description} 
           link={link.url}
