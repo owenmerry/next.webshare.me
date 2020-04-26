@@ -56,10 +56,11 @@ Links.getInitialProps = async function() {
       }); 
     }
 
+    const dataOrdered = data.links.reverse();
     const topResults = [];
 
     for (var i = 0; i < 40; i++) {
-      topResults.push(data.links[i])
+      topResults.push(dataOrdered[i])
     }
   
     return {
