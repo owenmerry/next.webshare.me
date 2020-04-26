@@ -1,18 +1,30 @@
-import Link from 'next/link';
+import { Header } from 'owenmerry-designsystem';
 
 const Menu = props => (
     <div>
-        <Link href="/" as={`/`}>
-            <a>Home</a>
-        </Link>
-        <span> - </span>
-        <Link href="/links" as={`/links`}>
-            <a>Links</a>
-        </Link>
-        <span> - </span>
-        <Link href="/collections" as={`/collections`}>
-            <a>Collections</a>
-        </Link>
+        <style jsx global>{`
+            html, body {
+                font-family: 'Arial';
+                margin:0px;
+                padding:0px;
+                }
+            `}
+            </style>
+        <Header 
+            logoURL='/webshare-logo.svg'
+            backgroundColor='transparent'
+            menuSettings={
+              {
+                align: 'right',
+                items: [
+                  {name:'Home',url:'/',selected: props.page === 'home'},
+                  {name:'Links',url:'/links',selected: props.page === 'links'},
+                  {name:'Collection',url:'/collections',selected: props.page === 'collections'},
+                ]
+              }
+        }
+            backgroundColor='rgb(32, 32, 192)'
+        />
     </div>
 );
 

@@ -1,14 +1,29 @@
 import fetch from 'isomorphic-unfetch';
 import Menu from '../components/Menu';
-import { FlexGrid, Card } from 'owenmerry-designsystem';
+import { FlexGrid, Card, CardList } from 'owenmerry-designsystem';
 
 const Links = props => {
+
+
 
 return (
     <div>
     <Menu />
     <div>Add Link <input type='text' /> <button>Add Link</button></div>
       <p>Show Links ({props.links.length})</p>
+here
+
+      <CardList 
+          items={props.links}
+          cardSettings={{
+            shadowLarge: true,
+            width: '400px',
+            imageHeight: '400px',
+            marginBottom: '50px',
+          }}
+          showLoadMore={false}
+        />
+{/* 
       <FlexGrid>
         {props.links.reverse().slice(0,100).map((link, index) => (
           <Card 
@@ -21,7 +36,7 @@ return (
           padding 
           ></Card>
         ))}
-      </FlexGrid>
+      </FlexGrid> */}
     </div>
   )
 };
@@ -31,9 +46,24 @@ Links.getInitialProps = async function() {
     const data = await res.json();
   
     console.log(`Show data fetched. Count: ${data.length}`);
+
+    const formatList = (data) => {
+      return data.map((item)=> {
+        return {
+          subtitle:item.name,
+          image: item.image,
+        }; 
+      }); 
+    }
+
+    const topResults = [];
+
+    for (var i = 0; i < 40; i++) {
+      topResults.push(data.links[i])
+    }
   
     return {
-      links: data.links,
+      links: topResults,
     };
 };
   
