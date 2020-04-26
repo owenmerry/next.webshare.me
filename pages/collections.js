@@ -15,7 +15,7 @@ const Collections = props => {
 
 return (
     <div>
-    <Menu />
+    <Menu page='collections' />
       <p>Show Collections ({props.collections.length})</p>
       <CardList 
           items={formatList(props.collections)}

@@ -17,9 +17,8 @@ const Menu = props => (
               {
                 align: 'right',
                 items: [
-                  {name:'Home',url:'/',selected: props.page === 'home'},
-                  {name:'Links',url:'/links',selected: props.page === 'links'},
-                  {name:'Collection',url:'/collections',selected: props.page === 'collections'},
+                  {name:'Links',url:'/links',selected: props.page === 'link'},
+                  {name:'Collections',url:'/collections',selected: props.page === 'collection'},
                 ]
               }
         }

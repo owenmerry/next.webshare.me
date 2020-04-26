@@ -8,7 +8,7 @@ const Links = props => {
 
 return (
     <div>
-    <Menu />
+    <Menu page='links'/>
     <div>Add Link <input type='text' /> <button>Add Link</button></div>
       <p>Show Links ({props.links.length})</p>
 here

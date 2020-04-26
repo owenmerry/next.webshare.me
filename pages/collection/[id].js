@@ -6,7 +6,7 @@ const CollectionLinks = props => {
 
 return (
     <div>
-    <Menu />
+    <Menu page='collections' />
       <p>Show Links in Collection ({props.links.length})</p>
       <FlexGrid>
       {props.links.map((link, index) => (
