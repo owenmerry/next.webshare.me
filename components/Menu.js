@@ -15,10 +15,11 @@ const Menu = props => (
             backgroundColor='transparent'
             menuSettings={
               {
+                style: 'background',
                 align: 'right',
                 items: [
-                  {name:'Links',url:'/links',selected: props.page === 'link'},
-                  {name:'Collections',url:'/collections',selected: props.page === 'collection'},
+                  {name:'Links',url:'/links',selected: props.page === 'links'},
+                  {name:'Collections',url:'/collections',selected: props.page === 'collections'},
                 ]
               }
         }
