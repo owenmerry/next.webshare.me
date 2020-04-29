@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import fetch from 'isomorphic-unfetch';
 import Menu from '../components/Menu';
-import { FlexGrid, Card, CardList } from 'owenmerry-designsystem';
+import { FlexGrid, Card, CardList, ProfileTitle } from 'owenmerry-designsystem';
 
 const Links = props => {
 
 //variables
 const loadingEmpty = {
-  title:'',
-  subtitle:'',
+  title:'loading',
+  subtitle:'loading',
 }
 
 //state
@@ -47,6 +47,7 @@ const [statePage, setStatePage] = useState({});
           title:item.title,
           subtitle:item.description,
           image: item.image,
+          link: item.url,
           timestamp: item.created_at,
         }; 
       }); 
@@ -68,7 +69,11 @@ const [statePage, setStatePage] = useState({});
 return (
     <div>
     <Menu page='links'/>
-
+    <ProfileTitle 
+      loading={stateListLoading} 
+      title='My Links' 
+      titleTextBottom={`${stateList.length} Links`} 
+      />
       <CardList 
           items={stateList}
           cardSettings={{
@@ -76,23 +81,10 @@ return (
             width: '400px',
             imageHeight: '200px',
             marginBottom: '50px',
-          }}
+            linkNewWindow: true,
+          }} 
           loading={stateListLoading}
         />
-{/* 
-      <FlexGrid>
-        {props.links.reverse().slice(0,100).map((link, index) => (
-          <Card 
-          key={index}
-          image={link.image}
-          title={link.title}
-          subtitle={link.description} 
-          link={link.url}
-          linkTarget={true}
-          padding 
-          ></Card>
-        ))}
-      </FlexGrid> */}
     </div>
   )
 };
@@ -101,6 +93,7 @@ Links.getInitialProps = async function() {
 
   
     return {
+      server: true,
     };
 };
   

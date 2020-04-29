@@ -1,14 +1,81 @@
+import { useState, useEffect } from 'react';
 import fetch from 'isomorphic-unfetch';
 import Menu from '../../components/Menu';
-import { Button, Card, FlexGrid } from 'owenmerry-designsystem';
+import { FlexGrid, Card, CardList, ProfileTitle } from 'owenmerry-designsystem';
 
 const CollectionLinks = props => {
+//variables
+const loadingEmpty = {
+  title:'loading',
+  subtitle:'loading',
+}
+
+//state
+const [stateListLoading, setStateListLoading] = useState(true);
+const [stateList, setStateList] = useState([loadingEmpty,loadingEmpty,loadingEmpty,loadingEmpty,loadingEmpty,loadingEmpty]);
+const [stateCollection, setCollection] = useState({});
+
+  useEffect(() => {
+    const getData = async () => {
+      const res = await fetch(`http://www.webshare.me/api/link/collection/${props.query.id}`);
+      const data = await res.json();
+
+      console.log(data);
+    
+      setData(data);
+    }
+    
+    const setData = (data) => {
+    
+      const cardList = formatList(data.links);
+    
+      setStateList(cardList);
+      setCollection(data.collection);
+      setStateListLoading(false);
+    }
+    
+    getData();
+    
+    },[]);
+
+// helpers
+    const formatList = (data) => {
+      console.log(data);
+      return data.map((item)=> {
+        return {
+          title:item.title,
+          subtitle:item.description,
+          image: item.image,
+          link: item.url,
+          timestamp: item.created_at,
+        }; 
+      }); 
+    }
+
+
 
 return (
     <div>
     <Menu page='collections' />
-      <p>Show Links in Collection ({props.links.length})</p>
-      <FlexGrid>
+    <ProfileTitle 
+      loading={stateListLoading} 
+      title={stateCollection.name} 
+      titleTextTop={`Collection`} 
+      titleTextBottom={`${stateList.length} Links created by Owen Merry`} 
+      />
+      <CardList 
+          items={stateList}
+          cardSettings={{
+            shadowLarge: true,
+            width: '400px',
+            imageHeight: '200px',
+            marginBottom: '50px',
+            linkNewWindow: true,
+          }} 
+          loading={stateListLoading}
+        />
+
+      {/* <FlexGrid>
       {props.links.map((link, index) => (
         <Card 
         key={index}
@@ -20,19 +87,21 @@ return (
         padding
         ></Card>
       ))}
-      </FlexGrid>
+      </FlexGrid> */}
     </div>
   )
 };
 
 CollectionLinks.getInitialProps = async function(props) {
-    const res = await fetch(`http://www.webshare.me/api/link/collection/${props.query.id}`);
-    const data = await res.json();
+    // const res = await fetch(`http://www.webshare.me/api/link/collection/${props.query.id}`);
+    // const data = await res.json();
   
    // console.log(`Show data fetched. Count: ${data.length}`);
   
     return {
-      links: data.links,
+      server: true,
+      query: props.query,
+      // links: data.links,
     };
 };
   

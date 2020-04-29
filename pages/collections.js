@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import fetch from 'isomorphic-unfetch';
 import Menu from '../components/Menu';
 import Link from 'next/link';
-import { FlexGrid, Card, CardList } from 'owenmerry-designsystem';
+import { FlexGrid, Card, CardList, ProfileTitle } from 'owenmerry-designsystem';
 
 const Collections = props => {
 
@@ -45,6 +45,7 @@ const [stateList, setStateList] = useState([loadingEmpty,loadingEmpty,loadingEmp
         return {
           title:item.name,
           image: item.image,
+          link: `/collection/${item.id}`,
           timestamp: item.created_at,
         }; 
       }); 
@@ -63,12 +64,17 @@ const [stateList, setStateList] = useState([loadingEmpty,loadingEmpty,loadingEmp
 return (
     <div>
     <Menu page='collections' />
+    <ProfileTitle 
+      loading={stateListLoading} 
+      title='My Collections' 
+      titleTextBottom={`${stateList.length} Collections`} 
+      />
       <CardList 
           items={stateList}
           cardSettings={{
             shadowLarge: true,
             width: '400px',
-            imageHeight: '300px',
+            imageHeight: '200px',
             marginBottom: '50px',
           }}
           loading={stateListLoading}
@@ -80,6 +86,7 @@ return (
 
 Collections.getInitialProps = async function() {
     return {
+      server: true,
     };
 };
   
