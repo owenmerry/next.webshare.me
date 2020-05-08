@@ -101,6 +101,16 @@ const [stateLogin, setStateLogin] = useState('false');
 
       setStateLogin('tryed');
     }
+
+    const tryLogout = async () => {
+
+      const res = await fetch('http://www.webshare.me/api/user/logout',{credentials: 'include'});
+      const data = await res.json();
+
+
+      setStateLogin('logout');
+    }
+
     const addLink = async () => {
 
       postData('http://www.webshare.me/api/link/add', { email: 'me@owenmerry.com', password: 'password' })
@@ -132,6 +142,8 @@ return (
       <button onClick={isLoggedIn}>Check Login</button> : {stateLogin}
       <br />
       <button onClick={tryLogin}>Try Login</button> : {stateLogin}
+      <br />
+      <button onClick={tryLogout}>Try Logout</button>
       </div>
       <CardList 
           items={stateList}
