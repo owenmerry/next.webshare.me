@@ -62,17 +62,13 @@ const [stateLogin, setStateLogin] = useState('false');
       return dataTop;
     }
 
-    const addLink = () => {
-      console.log('run add link');
-    }
-
     const postData = async (url = '', data = {}) => {
       // Default options are marked with *
       const response = await fetch(url, {
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
         mode: 'cors', // no-cors, *cors, same-origin
         cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: 'same-origin', // include, *same-origin, omit
+        credentials: 'include', // include, *same-origin, omit
         headers: {
           'Content-Type': 'application/json'
           // 'Content-Type': 'application/x-www-form-urlencoded',
@@ -87,23 +83,33 @@ const [stateLogin, setStateLogin] = useState('false');
     //functions
 
     const isLoggedIn = async () => {
-      const res = await fetch('http://www.webshare.me/api/user/loggedin');
+      const res = await fetch('http://www.webshare.me/api/user/loggedin',{credentials: 'include'});
       const data = await res.json();
       console.log('logged in', data);
 
-      setStateLogin('login');
+      setStateLogin(data.loggedin ? 'true' : 'false');
     }
 
 
     const tryLogin = async () => {
 
-      postData('http://www.webshare.me/api/login', { email: 'me@owenmerry.com', password: 'password' })
+      postData('http://www.webshare.me/api/user/login', { email: 'me@owenmerry.com', password: 'password' })
       .then(data => {
         console.log('post data',data); // JSON data parsed by `response.json()` call
       });
 
 
       setStateLogin('tryed');
+    }
+    const addLink = async () => {
+
+      postData('http://www.webshare.me/api/link/add', { email: 'me@owenmerry.com', password: 'password' })
+      .then(data => {
+        console.log('post data',data); // JSON data parsed by `response.json()` call
+      });
+
+
+      setStateLogin('add link');
     }
 
 
