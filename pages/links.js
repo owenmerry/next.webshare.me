@@ -91,14 +91,19 @@ const [stateLogin, setStateLogin] = useState('false');
       const data = await res.json();
       console.log('logged in', data);
 
+      setStateLogin('login');
+    }
 
-      postData('http://www.webshare.me/api/link/add', { answer: 42 })
+
+    const tryLogin = async () => {
+
+      postData('http://www.webshare.me/api/login', { email: 'me@owenmerry.com', password: 'password' })
       .then(data => {
         console.log('post data',data); // JSON data parsed by `response.json()` call
       });
 
 
-      setStateLogin('true');
+      setStateLogin('tryed');
     }
 
 
@@ -119,6 +124,8 @@ return (
       <button onClick={addLink}>Add Link</button>
       <br />
       <button onClick={isLoggedIn}>Check Login</button> : {stateLogin}
+      <br />
+      <button onClick={tryLogin}>Try Login</button> : {stateLogin}
       </div>
       <CardList 
           items={stateList}
