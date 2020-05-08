@@ -28,7 +28,7 @@ const [stateList, setStateList] = useState([loadingEmpty,loadingEmpty,loadingEmp
     
     const setLinks = (dataCollections) => {
     
-      const cardList = formatList(getTopResults(dataCollections.collections,40));
+      const cardList = formatList(dataCollections.collections);
     
       setStateList(cardList);
       setStateListLoading(false);
@@ -75,7 +75,7 @@ return (
             shadowLarge: true,
             width: '400px',
             imageHeight: '200px',
-            marginBottom: '50px',
+            marginBottom: '20px',
           }}
           loading={stateListLoading}
         />

@@ -4,7 +4,7 @@ const Menu = props => (
     <div>
         <style jsx global>{`
             html, body {
-                font-family: 'Arial';
+                font-family: 'Source Sans Pro', sans-serif;
                 margin:0px;
                 padding:0px;
                 }
@@ -20,6 +20,7 @@ const Menu = props => (
                 items: [
                   {name:'Links',url:'/links',selected: props.page === 'links'},
                   {name:'Collections',url:'/collections',selected: props.page === 'collections'},
+                  {name:'Owen Merry',url:'/user/1',selected: props.page === 'profile'},
                 ]
               }
         }

@@ -67,11 +67,12 @@ return (
           items={stateList}
           cardSettings={{
             shadowLarge: true,
-            width: '400px',
-            imageHeight: '200px',
-            marginBottom: '50px',
+            width: '300px',
+            imageHeight: '150px',
+            marginBottom: '20px',
             linkNewWindow: true,
           }} 
+          grid='4'
           loading={stateListLoading}
         />
 
