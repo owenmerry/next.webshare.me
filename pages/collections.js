@@ -73,7 +73,7 @@ return (
           items={stateList}
           cardSettings={{
             shadowLarge: true,
-            width: '400px',
+            width: '350px',
             imageHeight: '200px',
             marginBottom: '20px',
           }}

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import fetch from 'isomorphic-unfetch';
 import Menu from '../../components/Menu';
-import { FlexGrid, Card, CardList, ProfileTitle, Tabs } from 'owenmerry-designsystem';
+import { CardList, ProfileTitle, Tabs } from 'owenmerry-designsystem';
 
 const UserProfile = props => {
 
@@ -40,7 +40,7 @@ return (
         items={stateLinkList}
         cardSettings={{
         shadowLarge: true,
-        width: '300px',
+        width: '280px',
         imageHeight: '150px',
         marginBottom: '20px',
         linkNewWindow: true,
@@ -52,7 +52,7 @@ return (
           items={stateCollectionList}
           cardSettings={{
             shadowLarge: true,
-            width: '300px',
+            width: '280px',
             imageHeight: '150px',
             marginBottom: '20px',
           }} 

@@ -14,7 +14,7 @@ const loadingEmpty = {
 //state
 const [stateListLoading, setStateListLoading] = useState(true);
 const [stateMorePostsLoading, setStateMorePostsLoading] = useState(false);
-const [stateList, setStateList] = useState([loadingEmpty,loadingEmpty,loadingEmpty,loadingEmpty,loadingEmpty,loadingEmpty]);
+const [stateList, setStateList] = useState([loadingEmpty,loadingEmpty,loadingEmpty,loadingEmpty,loadingEmpty,loadingEmpty,loadingEmpty,loadingEmpty]);
 const [statePage, setStatePage] = useState({});
 const [stateLogin, setStateLogin] = useState('false');
 
@@ -134,22 +134,11 @@ return (
       title='My Links' 
       titleTextBottom={`${stateList.length} Links`} 
       />
-      <div
-      >
-      <input />
-      <button onClick={addLink}>Add Link</button>
-      <br />
-      <button onClick={isLoggedIn}>Check Login</button> : {stateLogin}
-      <br />
-      <button onClick={tryLogin}>Try Login</button> : {stateLogin}
-      <br />
-      <button onClick={tryLogout}>Try Logout</button>
-      </div>
       <CardList 
           items={stateList}
           cardSettings={{
             shadowLarge: true,
-            width: '300px',
+            width: '280px',
             imageHeight: '150px',
             marginBottom: '20px',
             linkNewWindow: true,
