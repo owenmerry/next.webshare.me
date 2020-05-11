@@ -1,5 +1,5 @@
 import Menu from '../components/Menu';
-import { Button, Hero } from 'owenmerry-designsystem';
+import { ProfileTitle } from 'owenmerry-designsystem';
 
 const Signup = props => {
 
