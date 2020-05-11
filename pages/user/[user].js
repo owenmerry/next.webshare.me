@@ -2,10 +2,9 @@ import { useState, useEffect } from 'react';
 import fetch from 'isomorphic-unfetch';
 import Menu from '../../components/Menu';
 import { CardList, ProfileTitle, Tabs } from 'owenmerry-designsystem';
+import { formatListLinks, formatListCollectionsUser, getTopResults } from '../../helpers/general';
 
 const UserProfile = props => {
-
-    console.log(props);
 
 // state
 const [stateListLoading, setStateListLoading] = useState(false);
@@ -72,47 +71,13 @@ UserProfile.getInitialProps = async function(props) {
 
     const resCollection = await fetch(`http://webshare.me/api/collection/user/${props.query.user}`);
     const dataCollection = await resCollection.json();
-
-   //helpers
-   const formatListLink = (data) => {
-    return data.map((item)=> {
-      return !!item ? {
-        title:item.title,
-        subtitle:item.description,
-        image: item.image,
-        link: item.url,
-        timestamp: item.created_at,
-      } : {}; 
-    }); 
-  }
-
-  const formatListCollection = (data) => {
-    return data.map((item)=> {
-      return !!item ? {
-        title:item.name,
-        image: item.image,
-        link: `/collection/${item.id}`,
-        timestamp: item.created_at,
-      } : {}; 
-    }); 
-  }
-
-  const getTopResults = (data,amount) => {
-      const dataTop = [];
-      const dataOrdered = data.reverse();
-      for (var i = 0; i < amount; i++) {
-        dataTop.push(dataOrdered[i])
-      }
-
-      return dataTop;
-    }
   
     return {
       serverUser: dataUser,
       serverLinksAll: dataLinks.links,
       serverCollectionsAll: dataCollection.collections,
-      serverLinks: formatListLink(getTopResults(dataLinks.links,20)),
-      serverCollections: formatListCollection(dataCollection.collections),
+      serverLinks: formatListLinks(getTopResults(dataLinks.links,20)),
+      serverCollections: formatListCollectionsUser(dataCollection.collections),
     };
 };
   

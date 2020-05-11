@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import fetch from 'isomorphic-unfetch';
 import Menu from '../components/Menu';
-import Link from 'next/link';
-import { FlexGrid, Card, CardList, ProfileTitle } from 'owenmerry-designsystem';
+import { CardList, ProfileTitle } from 'owenmerry-designsystem';
+import { postData, formatListCollections } from '../helpers/general';
 
 const Collections = props => {
 
@@ -17,6 +17,11 @@ const [stateListLoading, setStateListLoading] = useState(true);
 const [stateList, setStateList] = useState([loadingEmpty,loadingEmpty,loadingEmpty,loadingEmpty,loadingEmpty,loadingEmpty]);
 
   useEffect(() => {
+    
+    getData();
+    
+    },[]);
+
     const getData = async () => {
       const res = await fetch('http://www.webshare.me/api/collection/all');
       const dataCollections = await res.json();
@@ -28,38 +33,27 @@ const [stateList, setStateList] = useState([loadingEmpty,loadingEmpty,loadingEmp
     
     const setLinks = (dataCollections) => {
     
-      const cardList = formatList(dataCollections.collections);
+      const cardList = formatListCollections(dataCollections.collections);
     
       setStateList(cardList);
       setStateListLoading(false);
     }
-    
-    getData();
-    
-    },[]);
 
-// helpers
-    const formatList = (data) => {
-      console.log(data);
-      return data.map((item)=> {
-        return {
-          title:item.name,
-          image: item.image,
-          link: `/collection/${item.id}`,
-          timestamp: item.created_at,
-        }; 
-      }); 
+    const refreshCards = async () => {
+      const res = await fetch('http://www.webshare.me/api/collection/all');
+      const dataCollections = await res.json();
+
+      setLinks(dataCollections);
     }
 
-    const getTopResults = (data,amount) => {
-      const dataTop = [];
-      const dataOrdered = data;
-      for (var i = 0; i < amount; i++) {
-        dataTop.push(dataOrdered[i])
-      }
-
-      return dataTop;
+    const addCollection = async (name) => {
+      postData('http://www.webshare.me/api/collection/add', { name: name })
+      .then(data => {
+        console.log('post data',data); // JSON data parsed by `response.json()` call
+        refreshCards();
+      });
     }
+
 
 return (
     <div>
@@ -73,11 +67,13 @@ return (
           items={stateList}
           cardSettings={{
             shadowLarge: true,
-            width: '350px',
-            imageHeight: '200px',
+            width: '280px',
+            imageHeight: '150px',
             marginBottom: '20px',
           }}
+          grid='4'
           loading={stateListLoading}
+          addItem={addCollection}
         />
 
     </div>

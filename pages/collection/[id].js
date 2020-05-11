@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import fetch from 'isomorphic-unfetch';
 import Menu from '../../components/Menu';
 import { FlexGrid, Card, CardList, ProfileTitle } from 'owenmerry-designsystem';
+import { formatListLinks, postData } from '../../helpers/general';
 
 const CollectionLinks = props => {
 //variables
@@ -16,42 +17,40 @@ const [stateList, setStateList] = useState([loadingEmpty,loadingEmpty,loadingEmp
 const [stateCollection, setCollection] = useState({});
 
   useEffect(() => {
+      getData();
+    },[]);
+
+
     const getData = async () => {
       const res = await fetch(`http://www.webshare.me/api/link/collection/${props.query.id}`);
       const data = await res.json();
-
-      console.log(data);
     
       setData(data);
     }
     
     const setData = (data) => {
     
-      const cardList = formatList(data.links);
+      const cardList = formatListLinks(data.links);
     
       setStateList(cardList);
       setCollection(data.collection);
       setStateListLoading(false);
     }
-    
-    getData();
-    
-    },[]);
 
-// helpers
-    const formatList = (data) => {
-      console.log(data);
-      return data.map((item)=> {
-        return {
-          title:item.title,
-          subtitle:item.description,
-          image: item.image,
-          link: item.url,
-          timestamp: item.created_at,
-        }; 
-      }); 
+    const refreshCards = async () => {
+      const res = await fetch(`http://www.webshare.me/api/link/collection/${props.query.id}`);
+      const data = await res.json();
+    
+      setData(data);
     }
 
+    const addLinkToCollection = async (website) => {
+      postData('http://www.webshare.me/api/link/add', { website: website, collection_id: props.query.id })
+      .then(data => {
+        console.log('post data',data); // JSON data parsed by `response.json()` call
+        refreshCards();
+      });
+    }
 
 
 return (
@@ -74,21 +73,8 @@ return (
           }} 
           grid='4'
           loading={stateListLoading}
+          addItem={addLinkToCollection}
         />
-
-      {/* <FlexGrid>
-      {props.links.map((link, index) => (
-        <Card 
-        key={index}
-        image={link.image}
-        title={link.title}
-        subtitle={link.description} 
-        link={link.url}
-        linkTarget={true}
-        padding
-        ></Card>
-      ))}
-      </FlexGrid> */}
     </div>
   )
 };
