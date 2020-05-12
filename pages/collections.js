@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Link from 'next/link'
 import fetch from 'isomorphic-unfetch';
 import Menu from '../components/Menu';
 import { CardList, ProfileTitle } from 'owenmerry-designsystem';
@@ -23,6 +24,7 @@ const [stateList, setStateList] = useState([loadingEmpty,loadingEmpty,loadingEmp
     },[]);
 
     const getData = async () => {
+      //const res = await fetch('http://www.webshare.me/api/collection/all');
       const res = await fetch('http://www.webshare.me/api/collection/all');
       const dataCollections = await res.json();
 

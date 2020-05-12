@@ -1,16 +1,30 @@
+import { useState } from 'react';
 import Menu from '../components/Menu';
-import { ProfileTitle } from 'owenmerry-designsystem';
+import { postData } from '../helpers/general';
+import { Signup } from 'owenmerry-designsystem';
+import Router from 'next/router';
 
-const Signup = props => {
+const SignupPage = props => {
+
+  const [stateError, setStateError] = useState('');
+
+  const SignupUser = async (data) => {
+    setStateError('');
+    const signup = await postData('http://www.webshare.me/api/user/signup', { name: data.name, email: data.email, password: data.password });
+    console.log('sign up data', signup);
+    if(signup.user.loggedin){
+        Router.push('/links')
+    } else {
+        setStateError('Sorry those details are not right, please try again.');
+    }
+}
 
 return (
     <div>
-    <Menu />
-    <ProfileTitle 
-      title='Signup' 
-      />
+    <Menu page='signup'/>
+    <Signup onSignup={SignupUser} errorText={stateError} />
     </div>
   )
 };
   
-export default Signup;
+export default SignupPage;

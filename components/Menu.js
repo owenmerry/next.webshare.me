@@ -11,20 +11,22 @@ const Menu = props => (
             `}
             </style>
         <Header 
-            logoURL='/webshare-logo.svg'
-            backgroundColor='transparent'
+            logoURL='/webshare-logo-blue.svg'
+            shadow
             menuSettings={
               {
-                style: 'background',
+                light: true,
                 align: 'right',
                 items: [
-                  {name:'Links',url:'/links',selected: props.page === 'links'},
-                  {name:'Collections',url:'/collections',selected: props.page === 'collections'},
-                  {name:'Owen Merry',url:'/user/1',selected: props.page === 'profile'},
+                  {name:'My Links',url:'/links',selected: props.page === 'links'},
+                  {name:'My Collections',url:'/collections',selected: props.page === 'collections'},
+                 // {name:'Owen Merry',url:'/user/1',selected: props.page === 'profile'},
+                  {name:'Login / Signup',url:'/login',selected: props.page === 'login'},
+                 // {name:'Signup',url:'/signup',selected: props.page === 'signup'},
                 ]
               }
-        }
-            backgroundColor='rgb(32, 32, 192)'
+            }
+            backgroundColor='white'
         />
     </div>
 );

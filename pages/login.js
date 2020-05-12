@@ -1,35 +1,36 @@
+import {useState} from 'react';
 import Menu from '../components/Menu';
-import { Button, ProfileTitle } from 'owenmerry-designsystem';
+import { Login } from 'owenmerry-designsystem';
 import { postData } from '../helpers/general';
+import Router from 'next/router';
 
-const Login = props => {
+const LoginPage = props => {
 
-    const loginUser = async () => {
-        postData('http://www.webshare.me/api/user/login', { email: 'me@owenmerry.com', password: 'password' })
-        .then(data => {
-            console.log('post data',data); // JSON data parsed by `response.json()` call
-        });
-    }
-
-    const logoutUser = async () => {
-        const res = await fetch('http://www.webshare.me/api/user/logout',{credentials: 'include'});
+    const isLoggedIn = async () => {
+        const res = await fetch('http://www.webshare.me/api/user/loggedin',{credentials: 'include'});
         const data = await res.json();
+        console.log('logged in', data);
+      }
+      isLoggedIn();
+
+    const [stateError, setStateError] = useState('');
+
+    const loginUser = async (data) => {
+        setStateError('');
+        const login = await postData('http://www.webshare.me/api/user/login', { email: data.email, password: data.password });
+        if(login.user.loggedin){
+            Router.push('/links')
+        } else {
+            setStateError('Sorry those details are not right, please try again.');
+        }
     }
 
 return (
     <div>
-    <Menu />
-    <ProfileTitle 
-      title='Login' 
-      />
-      <div>
-          <Button onClick={loginUser}>Login</Button>
-          <br />
-          <br />
-          <Button onClick={logoutUser}>Logout</Button>
-      </div>
+        <Menu page='login'/>
+        <Login onLogin={loginUser} errorText={stateError} />
     </div>
   )
 };
   
-export default Login;
+export default LoginPage;

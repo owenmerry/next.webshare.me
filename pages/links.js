@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import Link from 'next/link'
 import fetch from 'isomorphic-unfetch';
 import Menu from '../components/Menu';
 import { CardList, ProfileTitle } from 'owenmerry-designsystem';
@@ -33,6 +34,7 @@ const [stateList, setStateList] = useState([loadingEmpty,loadingEmpty,loadingEmp
 
     const refreshCards = async () => {
       setStateListLoading(true);
+      //const res = await fetch('http://www.webshare.me/api/link/user/mylinks');
       const res = await fetch('http://www.webshare.me/api/link/user/1');
       const dataLinks = await res.json();
 
@@ -43,6 +45,8 @@ const [stateList, setStateList] = useState([loadingEmpty,loadingEmpty,loadingEmp
     }
     
     const setLinks = (dataLinks) => {
+
+      console.log(dataLinks);
     
       const cardList = formatListLinks(getTopResults(dataLinks.links,40));
       //const cardList = formatListLinks(dataLinks.links.reverse());
