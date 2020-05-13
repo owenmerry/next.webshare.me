@@ -4,13 +4,13 @@ import fetch from 'isomorphic-unfetch';
 import Menu from '../components/Menu';
 import { CardList, ProfileTitle } from 'owenmerry-designsystem';
 import { postData, formatListCollections } from '../helpers/general';
+import { siteSettings } from '../helpers/settings';
 
 const Collections = props => {
 
 //variables
 const loadingEmpty = {
-  title:'',
-  subtitle:'',
+  title:'loading',
 }
 
 //state
@@ -24,11 +24,7 @@ const [stateList, setStateList] = useState([loadingEmpty,loadingEmpty,loadingEmp
     },[]);
 
     const getData = async () => {
-      //const res = await fetch('http://www.webshare.me/api/collection/all');
-      const res = await fetch('http://www.webshare.me/api/collection/all');
-      const dataCollections = await res.json();
-
-      console.log(dataCollections);
+      const dataCollections = await postData(siteSettings.apiWebsite +'/api/collection/mycollections');
     
       setLinks(dataCollections);
     }
@@ -42,24 +38,20 @@ const [stateList, setStateList] = useState([loadingEmpty,loadingEmpty,loadingEmp
     }
 
     const refreshCards = async () => {
-      const res = await fetch('http://www.webshare.me/api/collection/all');
-      const dataCollections = await res.json();
+      const dataCollections = await postData(siteSettings.apiWebsite +'/api/collection/mycollections');
 
       setLinks(dataCollections);
     }
 
     const addCollection = async (name) => {
-      postData('http://www.webshare.me/api/collection/add', { name: name })
-      .then(data => {
-        console.log('post data',data); // JSON data parsed by `response.json()` call
-        refreshCards();
-      });
+      await postData(siteSettings.apiWebsite +'/api/collection/add', { name: name });
+      refreshCards();
     }
 
 
 return (
     <div>
-    <Menu page='collections' />
+    <Menu page='collections' loggedin/>
     <ProfileTitle 
       loading={stateListLoading} 
       title='My Collections' 
@@ -70,7 +62,7 @@ return (
           cardSettings={{
             shadowLarge: true,
             width: '280px',
-            imageHeight: '150px',
+            imageShow: false,
             marginBottom: '20px',
           }}
           grid='4'

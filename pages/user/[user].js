@@ -3,6 +3,7 @@ import fetch from 'isomorphic-unfetch';
 import Menu from '../../components/Menu';
 import { CardList, ProfileTitle, Tabs } from 'owenmerry-designsystem';
 import { formatListLinks, formatListCollectionsUser, getTopResults } from '../../helpers/general';
+import { siteSettings } from '../../helpers/settings';
 
 const UserProfile = props => {
 
@@ -63,13 +64,13 @@ return (
 };
 
 UserProfile.getInitialProps = async function(props) {
-    const resUser = await fetch(`http://webshare.me/api/user/show/${props.query.user}`);
+    const resUser = await fetch(`${siteSettings.apiWebsite}/api/user/show/${props.query.user}`);
     const dataUser = await resUser.json();
 
-    const resLinks = await fetch(`http://webshare.me/api/link/user/${props.query.user}`);
+    const resLinks = await fetch(`${siteSettings.apiWebsite}/api/link/user/${props.query.user}`);
     const dataLinks = await resLinks.json();
 
-    const resCollection = await fetch(`http://webshare.me/api/collection/user/${props.query.user}`);
+    const resCollection = await fetch(`${siteSettings.apiWebsite}/api/collection/user/${props.query.user}`);
     const dataCollection = await resCollection.json();
   
     return {

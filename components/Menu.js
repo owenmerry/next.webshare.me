@@ -1,6 +1,45 @@
+import { useEffect, useState } from 'react';
 import { Header } from 'owenmerry-designsystem';
+import Router from 'next/router';
+import { siteSettings } from '../helpers/settings';
 
-const Menu = props => (
+const Menu = props => {
+
+  const [ stateLogin, setStateLogin] = useState(props.loggedin || false);
+  //console.log(props);
+  useEffect(() => {
+
+    getMenu();
+
+  },[stateLogin]);
+  
+  const isLoggedIn = async () => {
+    const res = await fetch(`${siteSettings.apiWebsite}/api/user/loggedin`,{credentials: 'include'});
+    return res.json();
+  }
+
+  const getMenu = async () => {
+    const login = await isLoggedIn();
+    const logClient  = typeof window !== 'undefined' && sessionStorage.loggedin || false;
+    console.log(logClient);
+    if(login.loggedin){
+      setStateLogin(true);
+    }
+  };
+
+  const menuClicked = async (data) => {
+    if(data.ref === 'logout'){
+      const res = await fetch(`${siteSettings.apiWebsite}/api/user/logout`,{credentials: 'include'});
+      const data = await res.json();
+      sessionStorage.loggedin = false;
+      setStateLogin(false);
+      Router.push('/');
+    } else {
+      Router.push(data.ref);
+    }
+  }
+  
+  return (
     <div>
         <style jsx global>{`
             html, body {
@@ -18,17 +57,21 @@ const Menu = props => (
                 light: true,
                 align: 'right',
                 items: [
-                  {name:'My Links',url:'/links',selected: props.page === 'links'},
-                  {name:'My Collections',url:'/collections',selected: props.page === 'collections'},
+                  stateLogin && {name:'My Links',ref:'/links',selected: props.page === 'links'},
+                  stateLogin && {name:'My Collections',ref:'/collections',selected: props.page === 'collections'},
+                  stateLogin && {name:'Logout',ref:'logout'},
+                  !stateLogin && {name:'Login / Signup',ref:'/login',selected: props.page === 'login' || props.page === 'signup'},
                  // {name:'Owen Merry',url:'/user/1',selected: props.page === 'profile'},
-                  {name:'Login / Signup',url:'/login',selected: props.page === 'login'},
                  // {name:'Signup',url:'/signup',selected: props.page === 'signup'},
                 ]
               }
             }
+            menuClicked={menuClicked}
             backgroundColor='white'
         />
     </div>
 );
+
+};
 
 export default Menu;

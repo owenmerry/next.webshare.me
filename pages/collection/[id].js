@@ -3,6 +3,7 @@ import fetch from 'isomorphic-unfetch';
 import Menu from '../../components/Menu';
 import { FlexGrid, Card, CardList, ProfileTitle } from 'owenmerry-designsystem';
 import { formatListLinks, postData } from '../../helpers/general';
+import { siteSettings } from '../../helpers/settings';
 
 const CollectionLinks = props => {
 //variables
@@ -22,7 +23,7 @@ const [stateCollection, setCollection] = useState({});
 
 
     const getData = async () => {
-      const res = await fetch(`http://www.webshare.me/api/link/collection/${props.query.id}`);
+      const res = await fetch(`${siteSettings.apiWebsite}/api/link/collection/${props.query.id}`);
       const data = await res.json();
     
       setData(data);
@@ -38,18 +39,15 @@ const [stateCollection, setCollection] = useState({});
     }
 
     const refreshCards = async () => {
-      const res = await fetch(`http://www.webshare.me/api/link/collection/${props.query.id}`);
+      const res = await fetch(`${siteSettings.apiWebsite}/api/link/collection/${props.query.id}`);
       const data = await res.json();
     
       setData(data);
     }
 
     const addLinkToCollection = async (website) => {
-      postData('http://www.webshare.me/api/link/add', { website: website, collection_id: props.query.id })
-      .then(data => {
-        console.log('post data',data); // JSON data parsed by `response.json()` call
-        refreshCards();
-      });
+      await postData(`${siteSettings.apiWebsite}/api/link/add`, { website: website, collection_id: props.query.id });
+      refreshCards();
     }
 
 
@@ -60,7 +58,7 @@ return (
       loading={stateListLoading} 
       title={stateCollection.name} 
       titleTextTop={`Collection`} 
-      titleTextBottom={`${stateList.length} Links created by Owen Merry`} 
+      titleTextBottom={`${stateList.length} Links in this collection`} 
       />
       <CardList 
           items={stateList}
