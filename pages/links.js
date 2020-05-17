@@ -23,6 +23,7 @@ const [stateList, setStateList] = useState([loadingEmpty,loadingEmpty,loadingEmp
 const [stateMorePostsLoading, setStateMorePostsLoading] = useState(false);
 const [statePage, setStatePage] = useState(true);
 const [statePageNum, setStatePageNum] = useState(40);
+const [stateStatus, setStateStatus] = useState('');
 
   useEffect(() => {
     
@@ -63,8 +64,9 @@ const [statePageNum, setStatePageNum] = useState(40);
     //functions
 
     const addLink = async (website) => {
-      await postData(siteSettings.apiWebsite +'/api/link/add', { website: website });
+      const added = await postData(siteSettings.apiWebsite +'/api/link/add', { website: website });
       refreshCards();
+      setStateStatus(added.status);
     }
 
     const getMorePosts = async () => {
@@ -92,6 +94,7 @@ return (
       title='My Links' 
       titleTextBottom={`${stateList.length} Links`} 
       />
+      <div className='status'>{stateStatus}</div>
       <CardList 
           items={stateList}
           cardSettings={{
@@ -104,6 +107,8 @@ return (
           grid='4'
           loading={statePageLoading || stateListLoading}
           addItem={addLink}
+          addItemPlaceholder='Paste website link here'
+          addItemButton='Add Link'
           isLoadMoreLoading={stateMorePostsLoading}
           showLoadMore={statePage}
           clickLoadMore={getMorePosts}

@@ -16,10 +16,29 @@ export const postData = async (url = '', data = {}) => {
       referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
       body: JSON.stringify(data) // body data type must match "Content-Type" header
     });
-   // console.log(response);
     //return response; // parses JSON response into native JavaScript objects
-    return response.json(); // parses JSON response into native JavaScript objects
+    if(response.status === 200){
+      return response.json(); // parses JSON response into native JavaScript objects
+    } else {
+      return {
+        status: 'error',
+        errorCode: response.status,
+      };
+    }
   }
+
+export const fetchData = async (url = '') => {
+  const response = await fetch( url ,{credentials: 'include'});
+
+  if(response.status === 200){
+    return response.json(); // parses JSON response into native JavaScript objects
+  } else {
+    return {
+      status: 'error',
+      errorCode: response.status,
+    };
+  }
+}
 
 
   // Formatting data

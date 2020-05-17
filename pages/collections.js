@@ -68,6 +68,8 @@ return (
           grid='4'
           loading={stateListLoading}
           addItem={addCollection}
+          addItemPlaceholder='Collection Name'
+          addItemButton='Add Collection'
         />
 
     </div>

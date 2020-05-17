@@ -7,15 +7,10 @@ import { siteSettings } from '../helpers/settings';
 
 const LoginPage = props => {
 
-    const isLoggedIn = async () => {
-        const res = await fetch(siteSettings.apiWebsite +'/api/user/loggedin',{credentials: 'include'});
-        const data = await res.json();
-        console.log('logged in', data);
-      };
-      isLoggedIn();
-
+    // state
     const [stateError, setStateError] = useState('');
 
+    // functions
     const loginUser = async (data) => {
         setStateError('');
         const login = await postData(siteSettings.apiWebsite +'/api/user/login', { email: data.email, password: data.password });

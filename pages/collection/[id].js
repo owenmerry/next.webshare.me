@@ -72,6 +72,8 @@ return (
           grid='4'
           loading={stateListLoading}
           addItem={addLinkToCollection}
+          addItemPlaceholder='Paste website link here'
+          addItemButton='Add Link'
         />
     </div>
   )
