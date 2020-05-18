@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React,{ useEffect, useState } from 'react';
 import { Header } from 'owenmerry-designsystem';
 import Router from 'next/router';
 import { siteSettings } from '../helpers/settings';
@@ -40,7 +40,7 @@ const Menu = props => {
   }
   
   return (
-    <div>
+    <React.Fragment>
         <style jsx global>{`
             html, body {
                 font-family: 'Source Sans Pro', sans-serif;
@@ -51,6 +51,7 @@ const Menu = props => {
             `}
             </style>
         <Header 
+        sticky
             logoURL='/webshare-logo-blue.svg'
             shadow
             menuSettings={
@@ -71,7 +72,7 @@ const Menu = props => {
             menuClicked={menuClicked}
             backgroundColor='white'
         />
-    </div>
+    </React.Fragment>
 );
 
 };
