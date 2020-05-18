@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import fetch from 'isomorphic-unfetch';
 import Menu from '../../components/Menu';
-import { FlexGrid, Card, CardList, ProfileTitle } from 'owenmerry-designsystem';
-import { formatListLinks, postData } from '../../helpers/general';
+import { Wrapper,Alert, CardList, ProfileTitle } from 'owenmerry-designsystem';
+import { formatListLinks, postData, isURL } from '../../helpers/general';
 import { siteSettings } from '../../helpers/settings';
 
 const CollectionLinks = props => {
@@ -16,6 +16,7 @@ const loadingEmpty = {
 const [stateListLoading, setStateListLoading] = useState(true);
 const [stateList, setStateList] = useState([loadingEmpty,loadingEmpty,loadingEmpty,loadingEmpty,loadingEmpty,loadingEmpty]);
 const [stateCollection, setCollection] = useState({});
+const [stateStatus, setStateStatus] = useState('');
 
   useEffect(() => {
       getData();
@@ -46,8 +47,18 @@ const [stateCollection, setCollection] = useState({});
     }
 
     const addLinkToCollection = async (website) => {
-      await postData(`${siteSettings.apiWebsite}/api/link/add`, { website: website, collection_id: props.query.id });
-      refreshCards();
+      if(isURL(website)) {
+        const added = await postData(`${siteSettings.apiWebsite}/api/link/add`, { website: website, collection_id: props.query.id });
+        if(added.status === 'created'){refreshCards();}
+        if(added.status === 'error'){
+          setStateStatus('Hmm, something seems to have gone wrong with adding that link.');
+        }
+        if(added.status === 'existed'){
+          setStateStatus('This link is already saved in your links');
+        }
+      } else { 
+        setStateStatus('Hmm, that link doesn\'t seem to be a valid website address');
+      }
     }
 
 
@@ -60,6 +71,7 @@ return (
       titleTextTop={`Collection`} 
       titleTextBottom={`${stateList.length} Links in this collection`} 
       />
+      <Wrapper><Alert type='error' text={stateStatus} /></Wrapper>
       <CardList 
           items={stateList}
           cardSettings={{

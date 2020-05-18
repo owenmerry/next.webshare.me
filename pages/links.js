@@ -68,13 +68,13 @@ const [stateStatus, setStateStatus] = useState('');
         const added = await postData(siteSettings.apiWebsite +'/api/link/add', { website: website });
         if(added.status === 'created'){refreshCards();}
         if(added.status === 'error'){
-          setStateStatus('hmm, something seems to have gone wrong with that link.');
+          setStateStatus('Hmm, something seems to have gone wrong with adding that link.');
         }
         if(added.status === 'existed'){
           setStateStatus('This link is already saved in your links');
         }
       } else { 
-        setStateStatus('hmm, this link doesn\'t seem to be valid website link');
+        setStateStatus('Hmm, that link doesn\'t seem to be a valid website address');
       }
     }
 
@@ -119,7 +119,7 @@ return (
           addItemPlaceholder='Paste website link here'
           addItemButton='Add Link'
           isLoadMoreLoading={stateMorePostsLoading}
-          showLoadMore={statePage}
+          showLoadMore={false}
           clickLoadMore={getMorePosts}
           loadMoreText='More Links'
           loadMoreTextLoading='Loading...'

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link'
 import fetch from 'isomorphic-unfetch';
 import Menu from '../components/Menu';
-import { CardList, ProfileTitle } from 'owenmerry-designsystem';
+import { CardList, ProfileTitle, Wrapper,Alert } from 'owenmerry-designsystem';
 import { postData, formatListCollections } from '../helpers/general';
 import { siteSettings } from '../helpers/settings';
 
@@ -16,6 +16,7 @@ const loadingEmpty = {
 //state
 const [stateListLoading, setStateListLoading] = useState(true);
 const [stateList, setStateList] = useState([loadingEmpty,loadingEmpty,loadingEmpty,loadingEmpty,loadingEmpty,loadingEmpty]);
+const [stateStatus, setStateStatus] = useState('');
 
   useEffect(() => {
     
@@ -44,8 +45,16 @@ const [stateList, setStateList] = useState([loadingEmpty,loadingEmpty,loadingEmp
     }
 
     const addCollection = async (name) => {
-      await postData(siteSettings.apiWebsite +'/api/collection/add', { name: name });
-      refreshCards();
+      if(name !== '') {
+        const added = await postData(siteSettings.apiWebsite +'/api/collection/add', { name: name });
+        if(added.status === 'error'){
+          setStateStatus('Hmm, something seems to have gone wrong with adding that collection.');
+        } else {
+          refreshCards();
+        }
+      } else { 
+        setStateStatus('Please write a name for the collection');
+      }
     }
 
 
@@ -57,6 +66,7 @@ return (
       title='My Collections' 
       titleTextBottom={`${stateList.length} Collections`} 
       />
+      <Wrapper><Alert type='error' text={stateStatus} /></Wrapper>
       <CardList 
           items={stateList}
           cardSettings={{
