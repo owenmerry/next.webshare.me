@@ -47,6 +47,7 @@ const Menu = props => {
                 margin:0px;
                 padding:0px;
                 }
+                a{text-decoration: none;}
             `}
             </style>
         <Header 
@@ -60,7 +61,8 @@ const Menu = props => {
                   stateLogin && {name:'My Links',ref:'/links',selected: props.page === 'links'},
                   stateLogin && {name:'My Collections',ref:'/collections',selected: props.page === 'collections'},
                   stateLogin && {name:'Logout',ref:'logout'},
-                  !stateLogin && {name:'Login / Signup',ref:'/login',selected: props.page === 'login' || props.page === 'signup'},
+                  !stateLogin && {name:'Login',ref:'/login',selected: props.page === 'login'},
+                  !stateLogin && {name:'Create Account',ref:'/signup',selected: props.page === 'signup'},
                  // {name:'Owen Merry',url:'/user/1',selected: props.page === 'profile'},
                  // {name:'Signup',url:'/signup',selected: props.page === 'signup'},
                 ]
