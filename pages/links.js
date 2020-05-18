@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link'
 import fetch from 'isomorphic-unfetch';
 import Menu from '../components/Menu';
-import { CardList, ProfileTitle } from 'owenmerry-designsystem';
-import { postData, formatListLinks, getTopResults } from '../helpers/general';
+import { CardList, ProfileTitle, Wrapper, Alert } from 'owenmerry-designsystem';
+import { postData, formatListLinks, getTopResults, isURL } from '../helpers/general';
 import { siteSettings } from '../helpers/settings';
 
 const Links = props => {
@@ -21,7 +21,7 @@ const [stateList, setStateList] = useState([loadingEmpty,loadingEmpty,loadingEmp
 
 
 const [stateMorePostsLoading, setStateMorePostsLoading] = useState(false);
-const [statePage, setStatePage] = useState(true);
+const [statePage, setStatePage] = useState(false);
 const [statePageNum, setStatePageNum] = useState(40);
 const [stateStatus, setStateStatus] = useState('');
 
@@ -52,8 +52,8 @@ const [stateStatus, setStateStatus] = useState('');
 
       console.log(dataLinks);
     
-      const cardList = formatListLinks(getTopResults(dataLinks.links,statePageNum));
-      //const cardList = formatListLinks(dataLinks.links.reverse());
+      //const cardList = formatListLinks(dataLinks.links,statePageNum);
+      const cardList = formatListLinks(dataLinks.links.reverse());
     
       setStateList(cardList);
       setStatePageLoading(false);
@@ -64,9 +64,18 @@ const [stateStatus, setStateStatus] = useState('');
     //functions
 
     const addLink = async (website) => {
-      const added = await postData(siteSettings.apiWebsite +'/api/link/add', { website: website });
-      refreshCards();
-      setStateStatus(added.status);
+      if(isURL(website)) {
+        const added = await postData(siteSettings.apiWebsite +'/api/link/add', { website: website });
+        if(added.status === 'created'){refreshCards();}
+        if(added.status === 'error'){
+          setStateStatus('hmm, something seems to have gone wrong with that link.');
+        }
+        if(added.status === 'existed'){
+          setStateStatus('This link is already saved in your links');
+        }
+      } else { 
+        setStateStatus('hmm, this link doesn\'t seem to be valid website link');
+      }
     }
 
     const getMorePosts = async () => {
@@ -94,7 +103,7 @@ return (
       title='My Links' 
       titleTextBottom={`${stateList.length} Links`} 
       />
-      <div className='status'>{stateStatus}</div>
+      <Wrapper><Alert type='error' text={stateStatus} /></Wrapper>
       <CardList 
           items={stateList}
           cardSettings={{
