@@ -89,7 +89,6 @@ return (
           items={stateList}
           cardSettings={{
             shadowLarge: true,
-            width: '280px',
             imageHeight: '150px',
             linkNewWindow: true,
             moreMenuSettings: {

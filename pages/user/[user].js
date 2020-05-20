@@ -40,7 +40,6 @@ return (
         items={stateLinkList}
         cardSettings={{
         shadowLarge: true,
-        width: '280px',
         imageHeight: '150px',
         marginBottom: '20px',
         linkNewWindow: true,
@@ -52,7 +51,6 @@ return (
           items={stateCollectionList}
           cardSettings={{
             shadowLarge: true,
-            width: '280px',
             imageHeight: '150px',
             marginBottom: '20px',
           }} 

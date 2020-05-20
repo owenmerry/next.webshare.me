@@ -79,7 +79,6 @@ return (
           items={stateList}
           cardSettings={{
             shadowLarge: true,
-            width: '280px',
             imageShow: false,
             moreMenuSettings: {
               items: [
