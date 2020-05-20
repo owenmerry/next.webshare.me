@@ -91,7 +91,6 @@ return (
             shadowLarge: true,
             width: '280px',
             imageHeight: '150px',
-            marginBottom: '20px',
             linkNewWindow: true,
             moreMenuSettings: {
               items: [
@@ -109,6 +108,7 @@ return (
           addItem={addLinkToCollection}
           addItemPlaceholder='Paste website link here'
           addItemButton='Add Link'
+          lazyloadShowSubtitle
         />
     </div>
   )

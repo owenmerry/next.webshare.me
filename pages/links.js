@@ -120,7 +120,6 @@ return (
             shadowLarge: true,
             width: '280px',
             imageHeight: '150px',
-            marginBottom: '20px',
             linkNewWindow: true,
             moreMenuSettings: {
               items: [
@@ -142,6 +141,7 @@ return (
           clickLoadMore={getMorePosts}
           loadMoreText='More Links'
           loadMoreTextLoading='Loading...'
+          lazyloadShowSubtitle
         />
     </div>
   )

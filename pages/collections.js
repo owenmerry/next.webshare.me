@@ -81,7 +81,6 @@ return (
             shadowLarge: true,
             width: '280px',
             imageShow: false,
-            marginBottom: '20px',
             moreMenuSettings: {
               items: [
               // {name: 'Add to Collection', ref: 'collection', selected: false},
