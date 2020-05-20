@@ -61,6 +61,19 @@ const [stateStatus, setStateStatus] = useState('');
       }
     }
 
+    const cardMoreMenuClicked = async (data) => {
+      if(data.ref === 'remove'){
+        const deleteLink = await postData(siteSettings.apiWebsite +'/api/collection/delete/'+ props.query.id +'/'+ data.id,{'_method': 'DELETE'});
+        setStateStatus('Your link was removed from this collection');
+        refreshCards();
+      }
+      if(data.ref === 'delete'){
+        const deleteLink = await postData(siteSettings.apiWebsite +'/api/link/delete/'+ data.id,{'_method': 'DELETE'});
+        setStateStatus('Your link was deleted');
+        refreshCards();
+      }
+    };
+
 
 return (
     <div>
@@ -80,6 +93,16 @@ return (
             imageHeight: '150px',
             marginBottom: '20px',
             linkNewWindow: true,
+            moreMenuSettings: {
+              items: [
+              // {name: 'Add to Collection', ref: 'collection', selected: false},
+              // {name: 'Edit', ref: 'edit', selected: false},
+              // {name: 'Remove from this Collection', ref: 'collection-remove', selected: false},
+              {name: 'Remove From Collection', ref: 'remove', selected: false},
+              {name: 'Delete', ref: 'delete', selected: false},
+              ],
+              menuClicked:cardMoreMenuClicked,
+            }
           }} 
           grid='4'
           loading={stateListLoading}

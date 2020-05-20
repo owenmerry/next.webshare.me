@@ -66,7 +66,9 @@ const [stateStatus, setStateStatus] = useState('');
     const addLink = async (website) => {
       if(isURL(website)) {
         const added = await postData(siteSettings.apiWebsite +'/api/link/add', { website: website });
-        if(added.status === 'created'){refreshCards();}
+        if(added.status === 'created'){
+          await refreshCards();
+        }
         if(added.status === 'error'){
           setStateStatus('Hmm, something seems to have gone wrong with adding that link.');
         }
@@ -91,6 +93,14 @@ const [stateStatus, setStateStatus] = useState('');
       setStatePageNum(statePageNum + 40);
     };
 
+    const cardMoreMenuClicked = async (data) => {
+      if(data.ref === 'delete'){
+        const deleteLink = await postData(siteSettings.apiWebsite +'/api/link/delete/'+ data.id,{'_method': 'DELETE'});
+        setStateStatus('Your link was deleted');
+        refreshCards();
+      }
+    };
+
 
 
 
@@ -112,6 +122,15 @@ return (
             imageHeight: '150px',
             marginBottom: '20px',
             linkNewWindow: true,
+            moreMenuSettings: {
+              items: [
+              // {name: 'Add to Collection', ref: 'collection', selected: false},
+              // {name: 'Edit', ref: 'edit', selected: false},
+              // {name: 'Remove from this Collection', ref: 'collection-remove', selected: false},
+              {name: 'Delete', ref: 'delete', selected: false},
+              ],
+              menuClicked:cardMoreMenuClicked,
+            }
           }} 
           grid='4'
           loading={statePageLoading || stateListLoading}

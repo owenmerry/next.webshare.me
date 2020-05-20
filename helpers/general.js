@@ -61,10 +61,12 @@ export const fetchData = async (url = '') => {
 export const formatListLinks = (data) => {
     return data.map((item)=> {
       return {
+        id:item.id,
         title:item.title,
         subtitle:item.description,
         image: item.image,
         link: item.url,
+        site: item.site.name,
         timestamp: item.created_at,
       }; 
     }); 
@@ -74,6 +76,7 @@ export const formatListLinks = (data) => {
     console.log(data);
     return data.map((item)=> {
       return {
+        id:item.id,
         title:item.name,
         image: item.image,
         link: `/collection/${item.id}`,

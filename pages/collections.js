@@ -57,6 +57,14 @@ const [stateStatus, setStateStatus] = useState('');
       }
     }
 
+    const cardMoreMenuClicked = async (data) => {
+      if(data.ref === 'delete'){
+        const deleteCollection = await postData(siteSettings.apiWebsite +'/api/collection/delete/'+ data.id,{'_method': 'DELETE'});
+        setStateStatus('Your collection was deleted');
+        refreshCards();
+      }
+    };
+
 
 return (
     <div>
@@ -74,6 +82,15 @@ return (
             width: '280px',
             imageShow: false,
             marginBottom: '20px',
+            moreMenuSettings: {
+              items: [
+              // {name: 'Add to Collection', ref: 'collection', selected: false},
+              // {name: 'Edit', ref: 'edit', selected: false},
+              // {name: 'Remove from this Collection', ref: 'collection-remove', selected: false},
+              {name: 'Delete', ref: 'delete', selected: false},
+              ],
+              menuClicked:cardMoreMenuClicked,
+            }
           }}
           grid='4'
           loading={stateListLoading}

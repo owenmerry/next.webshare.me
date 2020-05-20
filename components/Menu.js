@@ -58,6 +58,7 @@ const Menu = props => {
               {
                 light: true,
                 align: 'right',
+                seperator: 'bordertop',
                 items: [
                   stateLogin && {name:'My Links',ref:'/links',selected: props.page === 'links'},
                   stateLogin && {name:'My Collections',ref:'/collections',selected: props.page === 'collections'},
