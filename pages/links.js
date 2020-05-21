@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link'
 import fetch from 'isomorphic-unfetch';
 import Menu from '../components/Menu';
-import { CardList, ProfileTitle, Wrapper, Alert } from 'owenmerry-designsystem';
-import { postData, formatListLinks, getTopResults, isURL } from '../helpers/general';
+import { CardList, ProfileTitle, Wrapper, Alert, CardEdit, Button } from 'owenmerry-designsystem';
+import { postData, fetchData, formatListLinks, getTopResults, isURL } from '../helpers/general';
 import { siteSettings } from '../helpers/settings';
 
 const Links = props => {
@@ -24,6 +24,12 @@ const [stateMorePostsLoading, setStateMorePostsLoading] = useState(false);
 const [statePage, setStatePage] = useState(false);
 const [statePageNum, setStatePageNum] = useState(40);
 const [stateStatus, setStateStatus] = useState('');
+
+// pop ups
+const [stateEditShow, setStateEditShow] = useState(false);
+const [stateEditData, setStateEditData] = useState({});
+const [stateCollectionAddShow, setStateCollectionAddShow] = useState(false);
+const [stateCollectionAddData, setStateCollectionAddData] = useState({});
 
   useEffect(() => {
     
@@ -49,10 +55,6 @@ const [stateStatus, setStateStatus] = useState('');
     }
     
     const setLinks = (dataLinks) => {
-
-      console.log(dataLinks);
-    
-      //const cardList = formatListLinks(dataLinks.links,statePageNum);
       const cardList = formatListLinks(dataLinks.links.reverse());
     
       setStateList(cardList);
@@ -94,11 +96,53 @@ const [stateStatus, setStateStatus] = useState('');
     };
 
     const cardMoreMenuClicked = async (data) => {
+      if(data.ref === 'edit'){
+        cardEditShow(data.id);
+      }
+      if(data.ref === 'addtocollection'){
+        cardCollectionAddShow(data.id);
+      }
       if(data.ref === 'delete'){
         const deleteLink = await postData(siteSettings.apiWebsite +'/api/link/delete/'+ data.id,{'_method': 'DELETE'});
         setStateStatus('Your link was deleted');
         refreshCards();
       }
+    };
+
+    const cardEditShow = async (id) => {
+      const getLink = await fetchData(siteSettings.apiWebsite +'/api/link/getlink/'+ id);
+      console.log(getLink);
+      setStateEditData({
+        linkid:getLink.link.id,
+        image:getLink.link.image,
+        title:getLink.link.title,
+        description:getLink.link.description,
+        url:getLink.link.url,
+        privacy:getLink.link.privacy_id,
+      });
+      setStateEditShow(true)
+
+    };
+    const cardEditSubmit = async (formData) => {
+      const updateLink = await postData(siteSettings.apiWebsite +'/api/link/update',{...formData});   
+      refreshCards();
+      setStateEditShow(false);
+      setStateStatus('Your link was edited successfully');
+    };
+
+    const cardCollectionAddShow = async (id) => {
+      const getCollections = await postData(siteSettings.apiWebsite +'/api/collection/mycollections');
+      console.log(getCollections);
+      setStateCollectionAddData({
+        linkid:id,
+        collections: getCollections.collections,
+      });
+      setStateCollectionAddShow(true)
+    };
+    const cardCollectionAddSubmit = async (formData) => {
+      const updateLink = await fetchData(siteSettings.apiWebsite +'/api/link/linktocollection/'+ formData.linkid +'/'+ formData.collectionid);   
+      setStateCollectionAddShow(false);
+      setStateStatus('Your link was added to the collection');
     };
 
 
@@ -114,6 +158,19 @@ return (
       titleTextBottom={`${stateList.length} Links`} 
       />
       <Wrapper><Alert type='error' text={stateStatus} /></Wrapper>
+      <CardEdit 
+      show={stateEditShow} 
+      onPopUpHidden={() => setStateEditShow(false)} 
+      onSubmit={cardEditSubmit}
+      data={stateEditData}
+      />
+      <CardEdit 
+      show={stateCollectionAddShow} 
+      onPopUpHidden={() => setStateCollectionAddShow(false)} 
+      onSubmit={cardCollectionAddSubmit}
+      data={stateCollectionAddData}
+      formType='addtocollection'
+      />
       <CardList 
           items={stateList}
           cardSettings={{
@@ -122,8 +179,8 @@ return (
             linkNewWindow: true,
             moreMenuSettings: {
               items: [
-              // {name: 'Add to Collection', ref: 'collection', selected: false},
-              // {name: 'Edit', ref: 'edit', selected: false},
+              {name: 'Add to Collection', ref: 'addtocollection', selected: false},
+              {name: 'Edit', ref: 'edit', selected: false},
               // {name: 'Remove from this Collection', ref: 'collection-remove', selected: false},
               {name: 'Delete', ref: 'delete', selected: false},
               ],

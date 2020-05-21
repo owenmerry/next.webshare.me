@@ -42,7 +42,7 @@ const Menu = props => {
   return (
     <React.Fragment>
         <style jsx global>{`
-            html, body {
+            html, body, textarea {
                 font-family: 'Source Sans Pro', sans-serif;
                 margin:0px;
                 padding:0px;
@@ -65,8 +65,6 @@ const Menu = props => {
                   stateLogin && {name:'Logout',ref:'logout'},
                   !stateLogin && {name:'Login',ref:'/login',selected: props.page === 'login'},
                   !stateLogin && {name:'Create Account',ref:'/signup',selected: props.page === 'signup'},
-                 // {name:'Owen Merry',url:'/user/1',selected: props.page === 'profile'},
-                 // {name:'Signup',url:'/signup',selected: props.page === 'signup'},
                 ]
               }
             }

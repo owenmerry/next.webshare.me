@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link'
 import fetch from 'isomorphic-unfetch';
 import Menu from '../components/Menu';
-import { CardList, ProfileTitle, Wrapper,Alert } from 'owenmerry-designsystem';
-import { postData, formatListCollections } from '../helpers/general';
+import { CardList, ProfileTitle, Wrapper, Alert, CardEdit } from 'owenmerry-designsystem';
+import { postData, fetchData, formatListCollections } from '../helpers/general';
 import { siteSettings } from '../helpers/settings';
 
 const Collections = props => {
@@ -17,6 +17,8 @@ const loadingEmpty = {
 const [stateListLoading, setStateListLoading] = useState(true);
 const [stateList, setStateList] = useState([loadingEmpty,loadingEmpty,loadingEmpty,loadingEmpty,loadingEmpty,loadingEmpty]);
 const [stateStatus, setStateStatus] = useState('');
+const [stateEditShow, setStateEditShow] = useState(false);
+const [stateEditData, setStateEditData] = useState({});
 
   useEffect(() => {
     
@@ -58,11 +60,30 @@ const [stateStatus, setStateStatus] = useState('');
     }
 
     const cardMoreMenuClicked = async (data) => {
+      if(data.ref === 'edit'){
+        cardEditShow(data.id);
+      }
       if(data.ref === 'delete'){
         const deleteCollection = await postData(siteSettings.apiWebsite +'/api/collection/delete/'+ data.id,{'_method': 'DELETE'});
         setStateStatus('Your collection was deleted');
         refreshCards();
       }
+    };
+
+    const cardEditShow = async (id) => {
+      const getCollection = await fetchData(siteSettings.apiWebsite +'/api/collection/getcollection/'+ id);
+      console.log(getCollection);
+      setStateEditData({
+        collectionid:getCollection.collection.id,
+        name:getCollection.collection.name,
+      });
+      setStateEditShow(true)
+
+    };
+    const cardEditSubmit = async (formData) => {
+      const updateCollection = await postData(siteSettings.apiWebsite +'/api/collection/update',{...formData});   
+      refreshCards();
+      setStateEditShow(false);
     };
 
 
@@ -75,6 +96,13 @@ return (
       titleTextBottom={`${stateList.length} Collections`} 
       />
       <Wrapper><Alert type='error' text={stateStatus} /></Wrapper>
+      <CardEdit 
+      show={stateEditShow} 
+      onPopUpHidden={() => setStateEditShow(false)} 
+      onSubmit={cardEditSubmit}
+      data={stateEditData}
+      formType='collection'
+      />
       <CardList 
           items={stateList}
           cardSettings={{
@@ -83,7 +111,7 @@ return (
             moreMenuSettings: {
               items: [
               // {name: 'Add to Collection', ref: 'collection', selected: false},
-              // {name: 'Edit', ref: 'edit', selected: false},
+              {name: 'Edit', ref: 'edit', selected: false},
               // {name: 'Remove from this Collection', ref: 'collection-remove', selected: false},
               {name: 'Delete', ref: 'delete', selected: false},
               ],

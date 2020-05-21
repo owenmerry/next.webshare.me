@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import fetch from 'isomorphic-unfetch';
 import Menu from '../../components/Menu';
-import { Wrapper,Alert, CardList, ProfileTitle } from 'owenmerry-designsystem';
-import { formatListLinks, postData, isURL } from '../../helpers/general';
+import { Wrapper,Alert, CardList, ProfileTitle, CardEdit } from 'owenmerry-designsystem';
+import { formatListLinks, postData, fetchData, isURL } from '../../helpers/general';
 import { siteSettings } from '../../helpers/settings';
 
 const CollectionLinks = props => {
@@ -17,6 +17,12 @@ const [stateListLoading, setStateListLoading] = useState(true);
 const [stateList, setStateList] = useState([loadingEmpty,loadingEmpty,loadingEmpty,loadingEmpty,loadingEmpty,loadingEmpty]);
 const [stateCollection, setCollection] = useState({});
 const [stateStatus, setStateStatus] = useState('');
+
+//pop ups
+const [stateEditShow, setStateEditShow] = useState(false);
+const [stateEditData, setStateEditData] = useState({});
+const [stateCollectionAddShow, setStateCollectionAddShow] = useState(false);
+const [stateCollectionAddData, setStateCollectionAddData] = useState({});
 
   useEffect(() => {
       getData();
@@ -62,6 +68,12 @@ const [stateStatus, setStateStatus] = useState('');
     }
 
     const cardMoreMenuClicked = async (data) => {
+      if(data.ref === 'edit'){
+        cardEditShow(data.id);
+      }
+      if(data.ref === 'addtocollection'){
+        cardCollectionAddShow(data.id);
+      }
       if(data.ref === 'remove'){
         const deleteLink = await postData(siteSettings.apiWebsite +'/api/collection/delete/'+ props.query.id +'/'+ data.id,{'_method': 'DELETE'});
         setStateStatus('Your link was removed from this collection');
@@ -72,6 +84,41 @@ const [stateStatus, setStateStatus] = useState('');
         setStateStatus('Your link was deleted');
         refreshCards();
       }
+    };
+
+    const cardEditShow = async (id) => {
+      const getLink = await fetchData(siteSettings.apiWebsite +'/api/link/getlink/'+ id);
+      console.log(getLink);
+      setStateEditData({
+        linkid:getLink.link.id,
+        image:getLink.link.image,
+        title:getLink.link.title,
+        description:getLink.link.description,
+        url:getLink.link.url,
+        privacy:getLink.link.privacy_id,
+      });
+      setStateEditShow(true)
+
+    };
+    const cardEditSubmit = async (formData) => {
+      const updateLink = await postData(siteSettings.apiWebsite +'/api/link/update',{...formData});   
+      refreshCards();
+      setStateEditShow(false);
+    };
+
+    const cardCollectionAddShow = async (id) => {
+      const getCollections = await postData(siteSettings.apiWebsite +'/api/collection/mycollections');
+      console.log(getCollections);
+      setStateCollectionAddData({
+        linkid:id,
+        collections: getCollections.collections,
+      });
+      setStateCollectionAddShow(true)
+    };
+    const cardCollectionAddSubmit = async (formData) => {
+      const updateLink = await fetchData(siteSettings.apiWebsite +'/api/link/linktocollection/'+ formData.linkid +'/'+ formData.collectionid);   
+      setStateCollectionAddShow(false);
+      setStateStatus('Your link was added to the collection');
     };
 
 
@@ -85,6 +132,19 @@ return (
       titleTextBottom={`${stateList.length} Links in this collection`} 
       />
       <Wrapper><Alert type='error' text={stateStatus} /></Wrapper>
+      <CardEdit 
+      show={stateEditShow} 
+      onPopUpHidden={() => setStateEditShow(false)} 
+      onSubmit={cardEditSubmit}
+      data={stateEditData}
+      />
+      <CardEdit 
+      show={stateCollectionAddShow} 
+      onPopUpHidden={() => setStateCollectionAddShow(false)} 
+      onSubmit={cardCollectionAddSubmit}
+      data={stateCollectionAddData}
+      formType='addtocollection'
+      />
       <CardList 
           items={stateList}
           cardSettings={{
@@ -93,9 +153,8 @@ return (
             linkNewWindow: true,
             moreMenuSettings: {
               items: [
-              // {name: 'Add to Collection', ref: 'collection', selected: false},
-              // {name: 'Edit', ref: 'edit', selected: false},
-              // {name: 'Remove from this Collection', ref: 'collection-remove', selected: false},
+              {name: 'Add to Collection', ref: 'addtocollection', selected: false},
+              {name: 'Edit', ref: 'edit', selected: false},
               {name: 'Remove From Collection', ref: 'remove', selected: false},
               {name: 'Delete', ref: 'delete', selected: false},
               ],
