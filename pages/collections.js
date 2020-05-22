@@ -50,12 +50,13 @@ const [stateEditData, setStateEditData] = useState({});
       if(name !== '') {
         const added = await postData(siteSettings.apiWebsite +'/api/collection/add', { name: name });
         if(added.status === 'error'){
-          setStateStatus('Hmm, something seems to have gone wrong with adding that collection.');
+          setStateStatus({type: 'error', text: 'Hmm, something seems to have gone wrong with adding that collection.'});
         } else {
+          setStateStatus({type: 'success', text: 'Your collection was added'});
           refreshCards();
         }
       } else { 
-        setStateStatus('Please write a name for the collection');
+        setStateStatus({type: 'error', text: 'Please write a name for the collection'});
       }
     }
 
@@ -65,7 +66,7 @@ const [stateEditData, setStateEditData] = useState({});
       }
       if(data.ref === 'delete'){
         const deleteCollection = await postData(siteSettings.apiWebsite +'/api/collection/delete/'+ data.id,{'_method': 'DELETE'});
-        setStateStatus('Your collection was deleted');
+        setStateStatus({type: 'success', text: 'Your collection was deleted'});
         refreshCards();
       }
     };
@@ -84,6 +85,7 @@ const [stateEditData, setStateEditData] = useState({});
       const updateCollection = await postData(siteSettings.apiWebsite +'/api/collection/update',{...formData});   
       refreshCards();
       setStateEditShow(false);
+      setStateStatus({type: 'success', text: 'Your collection was edited'});
     };
 
 
@@ -95,7 +97,7 @@ return (
       title='My Collections' 
       titleTextBottom={`${stateList.length} Collections`} 
       />
-      <Wrapper><Alert type='error' text={stateStatus} /></Wrapper>
+      <Wrapper><Alert type={stateStatus.type} text={stateStatus.text} /></Wrapper>
       <CardEdit 
       show={stateEditShow} 
       onPopUpHidden={() => setStateEditShow(false)} 

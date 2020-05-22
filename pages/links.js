@@ -70,15 +70,16 @@ const [stateCollectionAddData, setStateCollectionAddData] = useState({});
         const added = await postData(siteSettings.apiWebsite +'/api/link/add', { website: website });
         if(added.status === 'created'){
           await refreshCards();
+          setStateStatus({type: 'success', text: 'Your link was added'});
         }
         if(added.status === 'error'){
-          setStateStatus('Hmm, something seems to have gone wrong with adding that link.');
+          setStateStatus({type: 'error', text: 'Hmm, something seems to have gone wrong with adding that link.'});
         }
         if(added.status === 'existed'){
-          setStateStatus('This link is already saved in your links');
+          setStateStatus({type: 'warning', text: 'This link is already saved in your links'});
         }
       } else { 
-        setStateStatus('Hmm, that link doesn\'t seem to be a valid website address');
+        setStateStatus({type: 'error', text: 'Hmm, that link doesn\'t seem to be a valid website address'});
       }
     }
 
@@ -104,7 +105,7 @@ const [stateCollectionAddData, setStateCollectionAddData] = useState({});
       }
       if(data.ref === 'delete'){
         const deleteLink = await postData(siteSettings.apiWebsite +'/api/link/delete/'+ data.id,{'_method': 'DELETE'});
-        setStateStatus('Your link was deleted');
+        setStateStatus({type: 'success', text: 'Your link was deleted'});
         refreshCards();
       }
     };
@@ -120,6 +121,7 @@ const [stateCollectionAddData, setStateCollectionAddData] = useState({});
         url:getLink.link.url,
         privacy:getLink.link.privacy_id,
       });
+      setStateStatus({type: 'success', text: 'Your link was edited'});
       setStateEditShow(true)
 
     };
@@ -127,7 +129,7 @@ const [stateCollectionAddData, setStateCollectionAddData] = useState({});
       const updateLink = await postData(siteSettings.apiWebsite +'/api/link/update',{...formData});   
       refreshCards();
       setStateEditShow(false);
-      setStateStatus('Your link was edited successfully');
+      setStateStatus({type: 'success', text: 'Your link was edited successfully'});
     };
 
     const cardCollectionAddShow = async (id) => {
@@ -142,7 +144,7 @@ const [stateCollectionAddData, setStateCollectionAddData] = useState({});
     const cardCollectionAddSubmit = async (formData) => {
       const updateLink = await fetchData(siteSettings.apiWebsite +'/api/link/linktocollection/'+ formData.linkid +'/'+ formData.collectionid);   
       setStateCollectionAddShow(false);
-      setStateStatus('Your link was added to the collection');
+      setStateStatus({type: 'success', text: 'Your link was added to the collection'});
     };
 
 
@@ -157,7 +159,7 @@ return (
       title='My Links' 
       titleTextBottom={`${stateList.length} Links`} 
       />
-      <Wrapper><Alert type='error' text={stateStatus} /></Wrapper>
+      <Wrapper><Alert type={stateStatus.type} text={stateStatus.text} /></Wrapper>
       <CardEdit 
       show={stateEditShow} 
       onPopUpHidden={() => setStateEditShow(false)} 
