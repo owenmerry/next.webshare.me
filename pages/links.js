@@ -121,7 +121,6 @@ const [stateCollectionAddData, setStateCollectionAddData] = useState({});
         url:getLink.link.url,
         privacy:getLink.link.privacy_id,
       });
-      setStateStatus({type: 'success', text: 'Your link was edited'});
       setStateEditShow(true)
 
     };

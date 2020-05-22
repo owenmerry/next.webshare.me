@@ -13,6 +13,11 @@ export default class MyDocument extends Document {
                 as="font"
                 crossOrigin=""
               />
+              <title>Save, Collect and Share Your Favourite Websites | webshare.me</title>
+                <meta property="og:title" content="Save, Collect and Share Your Favourite Websites" />
+                <meta property="og:description" content="Collect all your online links in one place and share with your friends" />
+                <meta property="og:image" content="http://www.webshare.me/webshare-share.png" />
+                <meta property="og:url" content="http://www.webshare.me/" />
             </Head>
             <body>
               <Main />
