@@ -103,6 +103,10 @@ const [stateCollectionAddData, setStateCollectionAddData] = useState({});
       if(data.ref === 'addtocollection'){
         cardCollectionAddShow(data.id);
       }
+      if(data.ref === 'refresh'){
+        const refreshLink = await fetchData(siteSettings.apiWebsite +'/api/link/refresh/'+ data.id);
+        refreshCards();
+      }
       if(data.ref === 'delete'){
         const deleteLink = await postData(siteSettings.apiWebsite +'/api/link/delete/'+ data.id,{'_method': 'DELETE'});
         setStateStatus({type: 'success', text: 'Your link was deleted'});
@@ -182,7 +186,7 @@ return (
               items: [
               {name: 'Add to Collection', ref: 'addtocollection', selected: false},
               {name: 'Edit', ref: 'edit', selected: false},
-              // {name: 'Remove from this Collection', ref: 'collection-remove', selected: false},
+              {name: 'Refresh', ref: 'refresh', selected: false},
               {name: 'Delete', ref: 'delete', selected: false},
               ],
               menuClicked:cardMoreMenuClicked,
