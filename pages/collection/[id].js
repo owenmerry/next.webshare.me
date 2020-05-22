@@ -30,7 +30,7 @@ const [stateCollectionAddData, setStateCollectionAddData] = useState({});
 
 
     const getData = async () => {
-      const res = await fetch(`${siteSettings.apiWebsite}/api/link/collection/${props.query.id}`);
+      const res = await fetch(`${siteSettings.apiWebsite}/api/link/collectionbyhash/${props.query.id}`);
       const data = await res.json();
     
       setData(data);
@@ -46,7 +46,7 @@ const [stateCollectionAddData, setStateCollectionAddData] = useState({});
     }
 
     const refreshCards = async () => {
-      const res = await fetch(`${siteSettings.apiWebsite}/api/link/collection/${props.query.id}`);
+      const res = await fetch(`${siteSettings.apiWebsite}/api/link/collectionbyhash/${props.query.id}`);
       const data = await res.json();
     
       setData(data);
@@ -54,7 +54,7 @@ const [stateCollectionAddData, setStateCollectionAddData] = useState({});
 
     const addLinkToCollection = async (website) => {
       if(isURL(website)) {
-        const added = await postData(`${siteSettings.apiWebsite}/api/link/add`, { website: website, collection_id: props.query.id });
+        const added = await postData(`${siteSettings.apiWebsite}/api/link/add`, { website: website, collection_id: stateCollection.id });
         if(added.status === 'created'){refreshCards();}
         if(added.status === 'error'){
           setStateStatus({type: 'error', text: 'Hmm, something seems to have gone wrong with adding that link.'});
@@ -75,7 +75,7 @@ const [stateCollectionAddData, setStateCollectionAddData] = useState({});
         cardCollectionAddShow(data.id);
       }
       if(data.ref === 'remove'){
-        const deleteLink = await postData(siteSettings.apiWebsite +'/api/collection/delete/'+ props.query.id +'/'+ data.id,{'_method': 'DELETE'});
+        const deleteLink = await postData(siteSettings.apiWebsite +'/api/collection/delete/'+ stateCollection.id +'/'+ data.id,{'_method': 'DELETE'});
         setStateStatus({type: 'success', text: 'Your link was removed from this collection'});
         refreshCards();
       }

@@ -79,7 +79,7 @@ export const formatListLinks = (data) => {
         id:item.id,
         title:item.name,
         image: item.image,
-        link: `/collection/${item.id}`,
+        link: `/collection/${item.url_hash}`,
         timestamp: item.created_at,
       }; 
     }); 
