@@ -7,7 +7,6 @@ export default class MyDocument extends Document {
         return (
           <Html lang="en">
             <Head>
-              <!-- Global site tag (gtag.js) - Google Analytics -->
               <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167506487-1"></script>
               <script>
                 window.dataLayer = window.dataLayer || [];
@@ -16,7 +15,6 @@ export default class MyDocument extends Document {
 
                 gtag('config', 'UA-167506487-1');
               </script>
-
               <link
                 rel="preload"
                 href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700&display=swap"
