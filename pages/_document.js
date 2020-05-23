@@ -1,5 +1,6 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
+import { GA_TRACKING_ID } from '../helpers/analytics'
 
 export default class MyDocument extends Document {
 
@@ -7,14 +8,23 @@ export default class MyDocument extends Document {
         return (
           <Html lang="en">
             <Head>
-              <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167506487-1"></script>
-              <script>
+              {/* Global Site Tag (gtag.js) - Google Analytics */}
+              <script
+                async
+                src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+              />
+              <script
+                dangerouslySetInnerHTML={{
+                  __html: `
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
-
-                gtag('config', 'UA-167506487-1');
-              </script>
+                gtag('config', '${GA_TRACKING_ID}', {
+                  page_path: window.location.pathname,
+                });
+              `,
+                }}
+              />
               <link
                 rel="preload"
                 href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700&display=swap"
