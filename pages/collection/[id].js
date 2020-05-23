@@ -47,7 +47,7 @@ const [stateCollectionAddData, setStateCollectionAddData] = useState({});
     }
 
     const refreshCards = async () => {
-      const data = await postData(`${siteSettings.apiWebsite}/api/link/collectionbyhash/${props.query.id}`,{collectionid:props.query.id});
+      const data = await postData(`${siteSettings.apiWebsite}/api/link/collectionbyhash`,{collectionid:props.query.id});
     
       setData(data);
     }
@@ -55,7 +55,9 @@ const [stateCollectionAddData, setStateCollectionAddData] = useState({});
     const addLinkToCollection = async (website) => {
       if(isURL(website)) {
         const added = await postData(`${siteSettings.apiWebsite}/api/link/add`, { website: website, collection_id: stateCollection.id });
-        if(added.status === 'created'){refreshCards();}
+        if(added.status === 'created'){
+          refreshCards();
+        }
         if(added.status === 'error'){
           setStateStatus({type: 'error', text: 'Hmm, something seems to have gone wrong with adding that link.'});
         }
