@@ -17,6 +17,7 @@ const [stateListLoading, setStateListLoading] = useState(true);
 const [stateList, setStateList] = useState([loadingEmpty,loadingEmpty,loadingEmpty,loadingEmpty,loadingEmpty,loadingEmpty]);
 const [stateCollection, setCollection] = useState({});
 const [stateStatus, setStateStatus] = useState('');
+const [stateEditable, setStateEditable] = useState(false);
 
 //pop ups
 const [stateEditShow, setStateEditShow] = useState(false);
@@ -30,8 +31,7 @@ const [stateCollectionAddData, setStateCollectionAddData] = useState({});
 
 
     const getData = async () => {
-      const res = await fetch(`${siteSettings.apiWebsite}/api/link/collectionbyhash/${props.query.id}`);
-      const data = await res.json();
+      const data = await postData(`${siteSettings.apiWebsite}/api/link/collectionbyhash`,{collectionid:props.query.id});
     
       setData(data);
     }
@@ -42,12 +42,12 @@ const [stateCollectionAddData, setStateCollectionAddData] = useState({});
     
       setStateList(cardList);
       setCollection(data.collection);
+      setStateEditable(data.isEditable);
       setStateListLoading(false);
     }
 
     const refreshCards = async () => {
-      const res = await fetch(`${siteSettings.apiWebsite}/api/link/collectionbyhash/${props.query.id}`);
-      const data = await res.json();
+      const data = await postData(`${siteSettings.apiWebsite}/api/link/collectionbyhash/${props.query.id}`,{collectionid:props.query.id});
     
       setData(data);
     }
@@ -156,7 +156,7 @@ return (
             shadowLarge: true,
             imageHeight: '150px',
             linkNewWindow: true,
-            moreMenuSettings: {
+            moreMenuSettings: stateEditable && {
               items: [
               {name: 'Add to Collection', ref: 'addtocollection', selected: false},
               {name: 'Edit', ref: 'edit', selected: false},
@@ -169,6 +169,7 @@ return (
           }} 
           grid='4'
           loading={stateListLoading}
+          addHide={!stateEditable}
           addItem={addLinkToCollection}
           addItemPlaceholder='Paste website link here'
           addItemButton='Add Link'
