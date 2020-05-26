@@ -108,7 +108,7 @@ const [stateCollectionAddData, setStateCollectionAddData] = useState({});
     };
     const cardEditSubmit = async (formData) => {
       const updateLink = await postData(siteSettings.apiWebsite +'/api/link/update',{...formData});  
-      setStateStatus({type: 'success', text: 'Your link was added'}); 
+      setStateStatus({type: 'success', text: 'Your link was edited successfully'}); 
       refreshCards();
       setStateEditShow(false);
     };
