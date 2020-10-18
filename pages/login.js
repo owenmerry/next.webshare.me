@@ -24,7 +24,7 @@ const LoginPage = props => {
     const googleSignedIn = async (profile) => {
         console.log('Google sign in', profile);
         const login = await postData(siteSettings.apiWebsite +'/api/user/login/google', { token: profile.token || profile.credential });
-        if(login.user.loggedin && login.user.loggedin !== 'error'){
+        if(login.user && login.user.loggedin && login.user.loggedin !== 'error'){
             sessionStorage.loggedin = true;
             Router.push('/links')
         } else {
