@@ -85,6 +85,19 @@ export const formatListLinks = (data) => {
     }); 
   }
 
+  export const formatListLinksUser = (data) => {
+    return data.map((item)=> {
+      return {
+        id:item.id,
+        title:item.title,
+        subtitle:item.description,
+        image: item.image,
+        link: item.url,
+        timestamp: item.created_at,
+      }; 
+    }); 
+  }
+
   export const formatListCollectionsUser = (data) => {
     console.log(data);
     return data.map((item)=> {

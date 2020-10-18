@@ -21,11 +21,27 @@ const LoginPage = props => {
             setStateError('Sorry those details are not right, please try again.');
         }
     }
+    const googleSignedIn = async (profile) => {
+        console.log('Google sign in', profile);
+        const login = await postData(siteSettings.apiWebsite +'/api/user/login/google', { token: profile.token || profile.credential });
+        if(login.user.loggedin && login.user.loggedin !== 'error'){
+            sessionStorage.loggedin = true;
+            Router.push('/links')
+        } else {
+            setStateError('Hmm, something has gone wrong with Google login.');
+        }
+    };
 
 return (
     <div>
         <Menu page='login' />
-        <Login onLogin={loginUser} errorText={stateError} />
+        <Login 
+            onLogin={loginUser} 
+            errorText={stateError}
+            showGoogleSignIn={true}
+            onGoogleLogin={googleSignedIn}
+            googleClientId='996626440039-7ranq95afc7hdb3bfgir5g2da8i0mb4e.apps.googleusercontent.com'
+        />
     </div>
   )
 };

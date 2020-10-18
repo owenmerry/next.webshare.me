@@ -25,12 +25,20 @@ export default class MyDocument extends Document {
               `,
                 }}
               />
+
+              {/* google font */}
               <link
                 rel="preload"
                 href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700&display=swap"
                 as="font"
                 crossOrigin=""
               />
+
+              {/* added google sign up */}
+              <script src="https://apis.google.com/js/api:client.js"></script>
+              <script src="https://accounts.google.com/gsi/client"></script>
+
+              {/* meta data */}
               <title>Save, Collect and Share Your Favourite Websites | webshare.me</title>
                 <meta property="og:title" content="Save, Collect and Share Your Favourite Websites" />
                 <meta property="og:description" content="Collect all your online links in one place and share with your friends" />

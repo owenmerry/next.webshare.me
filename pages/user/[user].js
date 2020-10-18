@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import fetch from 'isomorphic-unfetch';
 import Menu from '../../components/Menu';
 import { CardList, ProfileTitle, Tabs } from 'owenmerry-designsystem';
-import { formatListLinks, formatListCollectionsUser, getTopResults } from '../../helpers/general';
+import { formatListLinksUser, formatListCollectionsUser, getTopResults } from '../../helpers/general';
 import { siteSettings } from '../../helpers/settings';
 
 const UserProfile = props => {
@@ -51,7 +51,7 @@ return (
           items={stateCollectionList}
           cardSettings={{
             shadowLarge: true,
-            imageHeight: '150px',
+            imageShow: false,
             marginBottom: '20px',
           }} 
           grid='4'
@@ -75,7 +75,7 @@ UserProfile.getInitialProps = async function(props) {
       serverUser: dataUser,
       serverLinksAll: dataLinks.links,
       serverCollectionsAll: dataCollection.collections,
-      serverLinks: formatListLinks(getTopResults(dataLinks.links,20)),
+      serverLinks: formatListLinksUser(dataLinks.links),
       serverCollections: formatListCollectionsUser(dataCollection.collections),
     };
 };
