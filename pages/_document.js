@@ -39,7 +39,7 @@ export default class MyDocument extends Document {
               <script src="https://accounts.google.com/gsi/client"></script>
 
               {/* meta data */}
-              <title>Save, Collect and Share Your Favourite Websites | webshare.me</title>
+                <title>Save, Collect and Share Your Favourite Websites | webshare.me</title>
                 <meta property="og:title" content="Save, Collect and Share Your Favourite Websites" />
                 <meta property="og:description" content="Collect all your online links in one place and share with your friends" />
                 <meta property="og:image" content="http://www.webshare.me/webshare-share.png" />
