@@ -40,7 +40,7 @@ return (
             errorText={stateError}
             showGoogleSignIn={true}
             onGoogleLogin={googleSignedIn}
-            googleClientId='996626440039-7ranq95afc7hdb3bfgir5g2da8i0mb4e.apps.googleusercontent.com'
+            googleClientId='996626440039-fdpi7ih8ec210tan3i29kuncqfv2ccqv.apps.googleusercontent.com'
         />
     </div>
   )
