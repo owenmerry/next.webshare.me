@@ -42,7 +42,7 @@ const Collections = (props) => {
 
   const getData = async () => {
     const dataCollections = await postData(
-      siteSettings.apiWebsite + "/api/collection/mycollections"
+      siteSettings.apiWebsite + "/api/collection/mycollections?top=true"
     );
 
     setLinks(dataCollections);
@@ -57,7 +57,7 @@ const Collections = (props) => {
 
   const refreshCards = async () => {
     const dataCollections = await postData(
-      siteSettings.apiWebsite + "/api/collection/mycollections"
+      siteSettings.apiWebsite + "/api/collection/mycollections?top=true"
     );
 
     setLinks(dataCollections);
