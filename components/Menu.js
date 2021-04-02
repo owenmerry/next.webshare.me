@@ -54,7 +54,6 @@ const Menu = (props) => {
         `}
       </style>
       <Header
-        sticky
         logoURL="/webshare-logo-blue.svg"
         shadow
         menuSettings={{

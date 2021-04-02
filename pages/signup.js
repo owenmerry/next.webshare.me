@@ -23,8 +23,11 @@ const SignupPage = props => {
 
 return (
     <div>
-    <Menu page='signup'/>
-    <Signup onSignup={SignupUser} errorText={stateError} />
+      <Menu page='signup'/>
+      <Signup 
+        onSignup={SignupUser} 
+        errorText={stateError} 
+      />
     </div>
   )
 };
