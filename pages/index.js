@@ -20,25 +20,6 @@ return (
         buttonUrl='/login'
         styleType='light'
       />
-      <CallToAction
-        title='Free Trial'
-        paragraph='dfvdvf er veqv e qrv evqev eq v vad va sdvsd vsd vasdv'
-        buttonLabel='Sign Up Now'
-      ></CallToAction>
-      <Features />
-      <Pricing />
-      <Articles />
-      <CallToAction
-        title='Free Trial'
-        paragraph='dfvdvf er veqv e qrv evqev eq v vad va sdvsd vsd vasdv'
-        buttonLabel='Sign Up Now'
-      ></CallToAction>
-      <Gallery />
-      <CallToAction
-        title='Free Trial'
-        paragraph='dfvdvf er veqv e qrv evqev eq v vad va sdvsd vsd vasdv'
-        buttonLabel='Sign Up Now'
-      ></CallToAction>
     </div>
   )
 };

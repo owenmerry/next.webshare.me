@@ -20,7 +20,7 @@
     "@zeit/next-source-maps": "0.0.4-canary.1",
     "isomorphic-unfetch": "^3.1.0",
     "next": "^9.5.5",
-    "owenmerry-designsystem": "^1.0.42",
+    "owenmerry-designsystem": "^1.0.43",
     "react": "^16.14.0",
     "react-dom": "^16.14.0"
   }
