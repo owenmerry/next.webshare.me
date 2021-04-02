@@ -374,6 +374,7 @@ const CollectionLinks = (props) => {
         addItemPlaceholder="Paste website link here"
         addItemButton="Add Link"
         lazyloadShowSubtitle
+        hideNoResults={stateCollectionList.length > 0}
       />
     </div>
   );
