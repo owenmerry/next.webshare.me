@@ -328,7 +328,7 @@ const CollectionLinks = (props) => {
         cardSettings={{
           shadowLarge: true,
           imageShow: false,
-          moreMenuSettings: {
+          moreMenuSettings: stateEditable && {
             items: [
               { name: "Edit", ref: "edit", selected: false },
               { name: "Delete", ref: "delete", selected: false },
