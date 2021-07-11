@@ -1,4 +1,4 @@
 export const siteSettings = {
-   apiWebsite:'http://api.webshare.me',
+   apiWebsite:'https://api1.webshare.me',
    //apiWebsite:'http://local.webshare.me', //local
 };
